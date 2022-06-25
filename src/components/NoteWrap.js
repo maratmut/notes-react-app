@@ -13,13 +13,21 @@ const AddNewNote = () => {
   const [noteTitle, setNoteTitle] = React.useState('');
   const [noteDesc, setNoteDesc] = React.useState('');
   const [selectedNote, setSelectedNote] = React.useState({})
+  const [isInputValid, setIsInputValid] = useState(true)
+  const [isTextAreaValid, setIsTextAreaValid] = useState(true)
   const [noteArr, setNoteArr] = React.useState(JSON.parse(localStorage.getItem('noteLists')) || data)
   
 
   const onChangeTitle = (e) => {
+    if(e.target.value.length > 0) {
+      setIsInputValid(true)
+    }
     setNoteTitle(e.target.value);
   };
   const onChangeDesc = (e) => {
+    if(e.target.value.length > 0) {
+      setIsTextAreaValid(true)
+    }
     setNoteDesc(e.target.value);
   };
 
@@ -38,12 +46,14 @@ const AddNewNote = () => {
 
 
   const createNoteAdd = (noteData) => {
+    
     const temp = [...noteArr]
-   
     temp.push(noteData)
     
     setNoteArr(temp)
     localStorage.setItem('noteLists', JSON.stringify(temp))
+    setNoteTitle('')
+    setNoteDesc('')
   }
 
   const saveEditNoteAdd = (editData) => {
@@ -92,6 +102,10 @@ const AddNewNote = () => {
       onChangeDesc={onChangeDesc}
       noteArr={noteArr}
       createNoteAdd={createNoteAdd}
+      isInputValid={isInputValid}
+      setIsInputValid={setIsInputValid}
+      isTextAreaValid={isTextAreaValid}
+      setIsTextAreaValid={setIsTextAreaValid}
       
       />
     }
@@ -108,7 +122,10 @@ const AddNewNote = () => {
       setNoteArr={setNoteArr}
       hideEditNoteForm={hideEditNoteForm}
       saveEditNoteAdd={saveEditNoteAdd}
-      
+      isTextAreaValid={isTextAreaValid}
+      isInputValid={isInputValid}
+      setIsInputValid={setIsInputValid}
+      setIsTextAreaValid={setIsTextAreaValid}
           />
       )
     }

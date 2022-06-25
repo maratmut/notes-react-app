@@ -8,13 +8,32 @@ const NoteForm = ({
   onChangeTitle,
   noteArr,
   createNoteAdd,
+  isInputValid,
+  setIsInputValid,
+  isTextAreaValid,
+  setIsTextAreaValid
 }) => {
-  const createNote = () => {
+
+  
+
+  const createNote = (event) => {
+    event.preventDefault()
+    
     const note = {
       id: noteArr.length + 1,
       title: noteTitle,
       desc: noteDesc,
     };
+    if(note.title.trim().length === 0) {
+      setIsInputValid(false)
+      
+      return
+    } 
+    if(note.desc.trim().length === 0) {
+      setIsTextAreaValid(false)
+      return
+    }
+    
 
     createNoteAdd(note);
 
@@ -23,7 +42,8 @@ const NoteForm = ({
 
   return (
     <>
-      <div className="popup-box">
+
+      
         <div className="popup">
           <div className="content">
             <header>
@@ -33,17 +53,18 @@ const NoteForm = ({
             <form action="#" onSubmit={createNote}>
               <div className="row title">
                 <label>Заголовок</label>
-                <input onChange={onChangeTitle} type="text" value={noteTitle} required />
+                <input style={{borderColor: !isInputValid ? 'red' : ''}} onChange={onChangeTitle} type="text" value={noteTitle} />
               </div>
               <div className="row description">
                 <label>Описание</label>
-                <textarea onChange={onChangeDesc} type="text" value={noteDesc} required />
+                <textarea style={{borderColor: !isTextAreaValid ? 'red' : ''}} onChange={onChangeDesc} type="text" value={noteDesc} />
               </div>
               <button type="submit">Добавить заметку</button>
             </form>
           </div>
         </div>
-      </div>
+      
+      <div onClick={hideNoteForm} className='overlay'></div>
     </>
   );
 };

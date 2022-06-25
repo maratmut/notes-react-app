@@ -1,7 +1,16 @@
 import React, { useState } from 'react'
 import '../App.css'
 
-const EditNoteForm = ({ hideShowEditNote,selectedNote, hideEditNoteForm, saveEditNoteAdd}) => {
+const EditNoteForm = ({ 
+  hideShowEditNote,
+  selectedNote, 
+  hideEditNoteForm, 
+  saveEditNoteAdd,
+  isTextAreaValid,
+  isInputValid,
+  setIsInputValid,
+  setIsTextAreaValid,
+}) => {
 
         const [noteTitle, setNoteTitle] = useState(selectedNote.title)
         const [noteDesc, setNoteDesc] = useState(selectedNote.desc)
@@ -9,9 +18,15 @@ const EditNoteForm = ({ hideShowEditNote,selectedNote, hideEditNoteForm, saveEdi
         
 
         const onChangeTitle = (e) => {
+          if(e.target.value.length > 0) {
+            setIsInputValid(true)
+          }
             setNoteTitle(e.target.value);
           };
           const onChangeDesc = (e) => {
+            if(e.target.value.length > 0) {
+              setIsTextAreaValid(true)
+            }
             setNoteDesc(e.target.value);
           };
 
@@ -22,6 +37,14 @@ const EditNoteForm = ({ hideShowEditNote,selectedNote, hideEditNoteForm, saveEdi
               title: noteTitle,
               desc: noteDesc,
               
+            }
+            if(noteTitle.trim().length === 0) {
+              setIsInputValid(false)
+              return
+            }
+            if(noteDesc.trim().length === 0) {
+              setIsTextAreaValid(false)
+              return
             }
             saveEditNoteAdd(updateNote)
 
@@ -40,17 +63,18 @@ const EditNoteForm = ({ hideShowEditNote,selectedNote, hideEditNoteForm, saveEdi
             <form action="#" onSubmit={saveEditNote}>
               <div className="row title">
                 <label>Заголовок</label>
-                <input onChange={onChangeTitle} type="text" value={noteTitle} />
+                <input style={{borderColor: !isInputValid ? 'red' : ''}} onChange={onChangeTitle} type="text" value={noteTitle} />
               </div>
               <div className="row description">
                 <label>Описание</label>
-                <textarea onChange={onChangeDesc} type="text" value={noteDesc} />
+                <textarea style={{borderColor: !isTextAreaValid ? 'red' : ''}} onChange={onChangeDesc} type="text" value={noteDesc} />
               </div>
               <button type='submit'>Редактировать</button>
             </form>
           </div>
         </div>
       </div>
+      <div onClick={hideShowEditNote} className='overlay'></div>
     </>
   )
 }

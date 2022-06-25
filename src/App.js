@@ -6,10 +6,7 @@ import NoteWrap from './components/NoteWrap'
 function App() {
   return (
     <div className="App">
-      
-
-    <NoteWrap />
-    
+      <NoteWrap />
     </div>
   );
 }
